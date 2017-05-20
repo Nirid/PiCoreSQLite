@@ -10,6 +10,8 @@ namespace PiCoreSQLite.Models
     public class TasksContext : DbContext
     {
         public DbSet<Tasks> Tasks { get; set; }
+        public DbSet<AssignedTasks> AssignedTasks { get; set; }
+        public DbSet<CompletedTasks> CompletedTasks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

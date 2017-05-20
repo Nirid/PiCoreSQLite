@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Semantics;
 using Microsoft.EntityFrameworkCore;
 using PiCoreSQLite.Models;
 
@@ -12,17 +13,46 @@ namespace PiCoreSQLite.Controllers
 {
     public class TasksController : Controller
     {
-        private readonly TasksContext _context;
+        private readonly TasksContext Data;
 
         public TasksController(TasksContext context)
         {
-            _context = context;    
+            Data = context;    
         }
 
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tasks.ToListAsync());
+            var full = new FullSet()
+            {
+                AssignedTasks = Data.AssignedTasks.ToList(),
+                CompletedTasks = Data.CompletedTasks.ToList(),
+                Tasks = Data.Tasks.ToList()
+            };
+            
+            return View(full);
+        }
+
+        // GET: Tasks/AddTasks
+        public async Task<IActionResult> AddTasks()
+        {
+            var full = new FullSet()
+            {
+                Tasks = Data.Tasks.ToList(),
+                AssignedTasks = Data.AssignedTasks.ToList()
+            };
+            return View(full);
+        }
+
+        public async Task<IActionResult> AddTask([Bind("Id,Name,Description,CreationDate,Difficulty,Duration,Categories,AssignedTasks")] IEnumerable<Tasks> tasks)
+        {
+            if (ModelState.IsValid)
+            {
+                Data.Add(tasks);
+                await Data.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return View(tasks);
         }
 
         // GET: Tasks/Details/5
@@ -33,7 +63,7 @@ namespace PiCoreSQLite.Controllers
                 return NotFound();
             }
 
-            var tasks = await _context.Tasks
+            var tasks = await Data.Tasks
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (tasks == null)
             {
@@ -58,8 +88,9 @@ namespace PiCoreSQLite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tasks);
-                await _context.SaveChangesAsync();
+                Data.Add(tasks);
+                //Data.SaveChanges();
+                await Data.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(tasks);
@@ -73,7 +104,7 @@ namespace PiCoreSQLite.Controllers
                 return NotFound();
             }
 
-            var tasks = await _context.Tasks.SingleOrDefaultAsync(m => m.Id == id);
+            var tasks = await Data.Tasks.SingleOrDefaultAsync(m => m.Id == id);
             if (tasks == null)
             {
                 return NotFound();
@@ -97,8 +128,8 @@ namespace PiCoreSQLite.Controllers
             {
                 try
                 {
-                    _context.Update(tasks);
-                    await _context.SaveChangesAsync();
+                    Data.Update(tasks);
+                    await Data.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +155,7 @@ namespace PiCoreSQLite.Controllers
                 return NotFound();
             }
 
-            var tasks = await _context.Tasks
+            var tasks = await Data.Tasks
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (tasks == null)
             {
@@ -139,15 +170,28 @@ namespace PiCoreSQLite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tasks = await _context.Tasks.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Tasks.Remove(tasks);
-            await _context.SaveChangesAsync();
+            var tasks = await Data.Tasks.SingleOrDefaultAsync(m => m.Id == id);
+            Data.Tasks.Remove(tasks);
+            await Data.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
         private bool TasksExists(int id)
         {
-            return _context.Tasks.Any(e => e.Id == id);
+            return Data.Tasks.Any(e => e.Id == id);
+        }
+
+        public async void WriteTasksSet()
+        {
+            DateTime koniec = DateTime.Today;
+            DateTime dzis = DateTime.Today;
+            while (koniec < dzis.AddYears(2))
+            {
+                Data.AssignedTasks.Add(new AssignedTasks() { Date = koniec });
+                Data.CompletedTasks.Add(new CompletedTasks() { Date = koniec });
+                koniec = koniec.AddDays(1);
+            }
+            await Data.SaveChangesAsync();
         }
     }
 }

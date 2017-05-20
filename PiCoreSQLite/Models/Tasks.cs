@@ -14,7 +14,7 @@ namespace PiCoreSQLite.Models
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
         public double Difficulty { get; set; }
-        public double Duration { get; set; }
+        public TimeSpan Duration { get; set; }
         public string Categories { get; set; }
         public int? AssignedId { get; set; }
         public int? CompletedId { get; set; }

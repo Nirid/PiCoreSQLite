@@ -1,4 +1,5 @@
-@model IEnumerable<PiCoreSQLite.Models.Tasks>
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model PiCoreSQLite.Models.FullSet
 
 @{
     ViewData["Title"] = "Index";
@@ -13,34 +14,34 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Description)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CreationDate)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Difficulty)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Duration)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Categories)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.AssignedId)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CompletedId)
+                    @Html.DisplayNameFor(model => model.Tasks.FirstOrDefault().Name)
                 </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Tasks) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
