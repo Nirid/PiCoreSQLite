@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PiCoreSQLite.Models;
 
 namespace PiCoreSQLite
 {
@@ -20,7 +23,14 @@ namespace PiCoreSQLite
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            using (var db = new TasksContext())
+            {
+                db.Database.EnsureCreated();
+                db.Database.Migrate();
+            }
         }
+
 
         public IConfigurationRoot Configuration { get; }
 
@@ -29,6 +39,7 @@ namespace PiCoreSQLite
         {
             // Add framework services.
             services.AddMvc();
+            services.AddEntityFrameworkSqlite().AddDbContext<TasksContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

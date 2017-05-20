@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PiCoreSQLite.Models
 {
-    public class CompletedTask : DbContext
+    public class CompletedTask
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
