@@ -23,32 +23,32 @@ namespace PiCoreSQLite.Controllers
         // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            var full = new FullSet()
-            {
-                AssignedTasks = Data.AssignedTasks.ToList(),
-                CompletedTasks = Data.CompletedTasks.ToList(),
-                Tasks = Data.Tasks.ToList()
-            };
-            
+            var full = new Tuple<IEnumerable<Tasks>, IEnumerable<AssignedTasks>, IEnumerable<CompletedTasks>, Tasks>
+            (
+                await Data.Tasks.ToListAsync(),
+                await Data.AssignedTasks.ToListAsync(),
+                await Data.CompletedTasks.ToListAsync(),
+                await Data.Tasks.FirstOrDefaultAsync()
+            );
+
+
             return View(full);
         }
 
         // GET: Tasks/AddTasks
-        public async Task<IActionResult> AddTasks()
+        public IActionResult AddTasks()
         {
-            var full = new FullSet()
-            {
-                Tasks = Data.Tasks.ToList(),
-                AssignedTasks = Data.AssignedTasks.ToList()
-            };
-            return View(full);
+            
+            return View();
         }
 
-        public async Task<IActionResult> AddTask([Bind("Id,Name,Description,CreationDate,Difficulty,Duration,Categories,AssignedTasks")] IEnumerable<Tasks> tasks)
+        // POST: Tasks/AddTasks
+        [HttpPost]
+        public async Task<IActionResult> AddTasks(TaskAndTime tasks)
         {
             if (ModelState.IsValid)
             {
-                Data.Add(tasks);
+                Data.Add(tasks.Task);
                 await Data.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

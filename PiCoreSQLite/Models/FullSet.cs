@@ -11,4 +11,10 @@ namespace PiCoreSQLite.Models
         public IEnumerable<AssignedTasks> AssignedTasks { get; set; }
         public IEnumerable<CompletedTasks> CompletedTasks { get; set; }
     }
+
+    public class TaskAndTime
+    {
+        public Tasks Task { get; set; }
+        public IEnumerable<DateTime> Time { get; set; }
+    }
 }

@@ -1,0 +1,80 @@
+@model PiCoreSQLite.Models.TaskAndTime
+
+@{
+    ViewData["Title"] = "AddTasks";
+}
+
+<h2>AddTasks</h2>
+<form asp-action="AddTasks">
+    <div class="form-horizontal">
+        <h4>Tasks</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Task.Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Task.Name" class="form-control" />
+                <span asp-validation-for="Task.Name" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Task.Description" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Task.Description" class="form-control" />
+                <span asp-validation-for="Task.Description" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Data Rozpoczecia:</label>
+            <div class="col-md-10">
+                <input asp-for="Task.CreationDate" class="form-control"  />
+                <span asp-validation-for="Task.CreationDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Task.Difficulty" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Task.Difficulty" class="form-control" />
+                <span asp-validation-for="Task.Difficulty" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Task.Duration" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Task.Duration" class="form-control" />
+                <span asp-validation-for="Task.Duration" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Task.Categories" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Task.Categories" class="form-control" />
+                <span asp-validation-for="Task.Categories" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Task.AssignedId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Task.AssignedId" class="form-control" />
+                <span asp-validation-for="Task.AssignedId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Task.CompletedId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Task.CompletedId" class="form-control" />
+                <span asp-validation-for="Task.CompletedId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="AddTasks" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
