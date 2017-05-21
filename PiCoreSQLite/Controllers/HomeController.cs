@@ -11,6 +11,7 @@ namespace PiCoreSQLite.Controllers
     public class HomeController : Controller
     {
         private readonly TasksContext Data;
+        
 
         public HomeController(TasksContext context)
         {
@@ -30,14 +31,18 @@ namespace PiCoreSQLite.Controllers
             return View(full);
         }
 
-        public IActionResult Report(long? ticks)
+        // GET
+        public async Task<IActionResult> Report(long? ticks)
         {
-            DateTime Dzien = new DateTime(ticks ?? DateTime.Today.Ticks);
-
+            if (ticks == null || ticks == 0)
+            {
+                ticks = Startup.Ticks;
+            }
+            DateTime Dzien = new DateTime(ticks ?? 0);
             var daty = Data.AssignedTasks.Where(d => d.Date.Date == Dzien.Date);
-            var assigned = Data.Tasks.Where(t => t.AssignedId == daty.First().Id);
+            var assigned = Data.Tasks.AsEnumerable().Where(t => t.AssignedId == (daty.FirstOrDefault()?.Id ?? -1));
             var datyC = Data.CompletedTasks.Where(d => d.Date.Date == Dzien.Date);
-            var completed = Data.Tasks.Where(t => t.CompletedId == datyC.First().Id);
+            var completed = Data.Tasks.AsEnumerable().Where(t => t.CompletedId == (datyC.FirstOrDefault()?.Id ?? -1));
 
             var dane = new Report()
             { 
@@ -50,15 +55,16 @@ namespace PiCoreSQLite.Controllers
         }
 
         // POST
-
         [HttpPost]
-        public async Task<IActionResult> Report(Report rep)
+        public async Task<IActionResult> Report([Bind("Data")]Report rep)
         {
             if (ModelState.IsValid)
             {
-                return View("Report",rep.Data.Ticks);
+                Startup.Ticks = rep.Data.Ticks;
+                return RedirectToAction("Report","Home");
             }
-            return View(rep);
+            Startup.Ticks = rep.Data.Ticks;
+            return RedirectToAction("Report", "Home");
         }
 
         // GET: Tasks/AddTasks

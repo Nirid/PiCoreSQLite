@@ -15,6 +15,8 @@ namespace PiCoreSQLite
 {
     public class Startup
     {
+        public  static long Ticks;
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()

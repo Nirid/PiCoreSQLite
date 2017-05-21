@@ -17,7 +17,7 @@
     <a asp-action="AddFinished">Dodaj wykonane zadanie</a>
 </p>
 <p>
-    <a asp-action="Report" asp-route-id="@DateTime.Today.Date.Ticks">Wyswietl raport</a>
+    <a asp-action="Report" asp-route-ticks="@DateTime.Today.Date.Ticks" asp-controller="Home">Wyswietl raport</a>
 </p>
 <h3>Zadania pozostale do wykonania:</h3>
 <table class="table">
