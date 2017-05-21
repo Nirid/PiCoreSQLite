@@ -11,9 +11,11 @@ namespace PiCoreSQLite.Models
         public Tasks Task { get; set; }
         public IEnumerable<DateTime> Time { get; set; }
         [Display(Name = "Powtarzanie")]
+        [Required]
         public Recurrency TypeOfRecurrency { get; set; }
         [Display(Name = "Zadania tworzone do dnia")]
         [DataType(DataType.Date)]
+        [Required]
         public DateTime EndDate { get; set; }
 
         public IEnumerable<DateTime> DaysFromEnum(DateTime Start)
@@ -23,6 +25,7 @@ namespace PiCoreSQLite.Models
                 case Recurrency.Pojedyncze:
                     yield return Start;
                     yield break;
+                case Recurrency.Codzienne:
                 case Recurrency.CoDrugiDzien:
                 case Recurrency.CoTrzeciDzien:
                 case Recurrency.CoCzwartyDzien:
@@ -72,6 +75,7 @@ namespace PiCoreSQLite.Models
         public enum Recurrency
         {
             Pojedyncze,
+            Codzienne = 1,
             [Display(Name = "Co drugi dzień")]
             CoDrugiDzien = 2,
             [Display(Name = "Co trzeci dzień")]

@@ -1,0 +1,78 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@model Tuple<System.Collections.Generic.IEnumerable<PiCoreSQLite.Models.Tasks>, System.Collections.Generic.IEnumerable<PiCoreSQLite.Models.AssignedTasks>, System.Collections.Generic.IEnumerable<PiCoreSQLite.Models.CompletedTasks>,PiCoreSQLite.Models.Tasks>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h2>List</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.CreationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.Difficulty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.Categories)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.AssignedId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item4.CompletedId)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Item1.OrderBy(modelItem => Model.Item2.FirstOrDefault(t => t.Id == modelItem.AssignedId)?.Date ?? DateTime.MaxValue).ThenBy(modelItem => Model.Item3.FirstOrDefault(t => t.Id == modelItem.CompletedId)?.Date ?? DateTime.MaxValue)) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difficulty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Item2.FirstOrDefault(t=>t.Id== item.AssignedId).Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.Item3.FirstOrDefault(t=>t.Id == item.CompletedId).Date)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+

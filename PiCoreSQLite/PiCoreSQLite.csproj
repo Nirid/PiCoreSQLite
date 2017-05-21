@@ -27,6 +27,11 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Views\Home\AddFinished.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <None Update="baza.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

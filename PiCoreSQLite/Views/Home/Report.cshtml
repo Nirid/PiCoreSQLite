@@ -1,0 +1,129 @@
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using PiCoreSQLite.Models
+@model PiCoreSQLite.Models.Report
+
+@{
+    ViewData["Title"] = "Report";
+}
+<p/>
+<p>
+    Wyswietla dla dnia: @Model.Data
+</p>
+    
+
+<h2>Wykonane tego dnia:</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Difficulty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Categories)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var item in Model.Completed)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difficulty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categories)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<h2>Zadane na ten dzien:</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Difficulty)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Task.Categories)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    @foreach (var item in Model.Assigned)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Difficulty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categories)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<div class="form-group">
+    <label asp-for="Data" class="col-md-2 control-label"></label>
+    <div class="col-md-10">
+        <input asp-for="Data" class="form-control" />
+        <span asp-validation-for="Data" class="text-danger"></span>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Report" class="btn btn-default" />
+    </div>
+</div>

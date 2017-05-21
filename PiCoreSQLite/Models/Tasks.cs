@@ -25,7 +25,9 @@ namespace PiCoreSQLite.Models
         public TimeSpan Duration { get; set; }
         [Display(Name = "Kategorie zadania")]
         public string Categories { get; set; }
+        [Display(Name = "Przydzielone na dzien:")]
         public int? AssignedId { get; set; }
+        [Display(Name = "Wykonane dnia:")]
         public int? CompletedId { get; set; }
     }
 }
