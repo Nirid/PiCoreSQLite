@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="AddTasks">Dodaj zadania do wykonania</a>
 </p>
 <table class="table">
     <thead>
@@ -61,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.Categories)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AssignedId)
+                @Html.DisplayFor(modelItem => modelItem.Item2.FirstOrDefault(t=>t.Id== item.AssignedId).Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CompletedId)

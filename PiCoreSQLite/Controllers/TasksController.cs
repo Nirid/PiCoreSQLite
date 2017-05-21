@@ -48,7 +48,22 @@ namespace PiCoreSQLite.Controllers
         {
             if (ModelState.IsValid)
             {
-                Data.Add(tasks.Task);
+                if (tasks.EndDate > Data.AssignedTasks.Max(t => t.Date))
+                    tasks.EndDate = Data.AssignedTasks.Max(t => t.Date);
+                foreach (var data in tasks.DaysFromEnum(tasks.Task.CreationDate))
+                {
+                    Tasks doBazy = new Tasks()
+                    {
+                        Categories = tasks.Task.Categories,
+                        CreationDate = tasks.Task.CreationDate,
+                        Name = tasks.Task.Name,
+                        Description = tasks.Task.Description,
+                        Difficulty = tasks.Task.Difficulty,
+                        Duration = tasks.Task.Duration
+                    };
+                    doBazy.AssignedId = Data.AssignedTasks.First(d => d.Date == data).Id;
+                    Data.Tasks.Add(doBazy);
+                }
                 await Data.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
